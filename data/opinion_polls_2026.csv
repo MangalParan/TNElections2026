@@ -1,0 +1,5 @@
+agency,date,sample_size,margin_error,spa_seats_low,spa_seats_high,admk_seats_low,admk_seats_high,tvk_seats_low,tvk_seats_high,others_seats_low,others_seats_high,spa_vote_pct,admk_vote_pct,tvk_vote_pct,others_vote_pct
+IANS-Matrize,2026-03-15,17410,3,104,114,114,127,6,12,1,6,37.5,39.5,14.5,11.0
+News18-VoteVibe,2026-03-23,7992,3,113,123,106,116,2,8,0,0,40.0,38.0,15.0,7.0
+Agni News Agency,2026-03-23,101643,3,180,180,50,60,0,10,0,0,44.9,38.5,9.7,6.9
+Lokpal,2026-04-01,117000,3,181,189,38,42,8,10,0,0,40.1,29.0,23.9,7.0

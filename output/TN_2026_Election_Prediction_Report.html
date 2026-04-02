@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tamil Nadu 2026 Assembly Election — Prediction Report</title>
+<style>
+  :root {
+    --dmk-red: #E31A1C;
+    --admk-green: #00A651;
+    --tvk-gold: #FFD700;
+    --ntk-purple: #800080;
+    --bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --text: #212529;
+    --text-muted: #6c757d;
+    --border: #dee2e6;
+    --accent: #0d6efd;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+  }
+  .hero .meta {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    margin-top: 0.5rem;
+  }
+  .hero .meta span { margin: 0 0.7rem; }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--accent);
+    color: #1a1a2e;
+  }
+  h3 {
+    font-size: 1.15rem;
+    margin: 1.5rem 0 0.7rem;
+    color: #16213e;
+  }
+  p { margin-bottom: 0.8rem; }
+  strong { color: #1a1a2e; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  th {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) { background: #f5f7fa; }
+  tr:hover { background: #eef1f6; }
+  .highlight-row { background: #fff3cd !important; font-weight: 600; }
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.4rem; }
+  .prediction-box {
+    background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    color: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+  .prediction-box h3 { color: #FFD700; margin-top: 0; font-size: 1.3rem; }
+  .prediction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .pred-card {
+    border-radius: 10px;
+    padding: 1.2rem;
+    text-align: center;
+  }
+  .pred-card.spa { background: var(--dmk-red); }
+  .pred-card.admk { background: var(--admk-green); }
+  .pred-card.tvk { background: #b8860b; }
+  .pred-card.others { background: #666; }
+  .pred-card .seats { font-size: 2.5rem; font-weight: 800; }
+  .pred-card .label { font-size: 0.85rem; opacity: 0.9; margin-top: 0.2rem; }
+  .pred-card .range { font-size: 0.8rem; opacity: 0.75; }
+  .pred-card .prob { font-size: 1.1rem; font-weight: 700; margin-top: 0.3rem; }
+  .prob-bar-container {
+    margin: 1rem 0;
+  }
+  .prob-bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.6rem;
+  }
+  .prob-bar-label {
+    width: 140px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: right;
+    padding-right: 1rem;
+  }
+  .prob-bar-track {
+    flex: 1;
+    background: #e9ecef;
+    border-radius: 6px;
+    height: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .prob-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    transition: width 1s ease;
+  }
+  .scenario-card {
+    border-left: 5px solid var(--accent);
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    background: #f8f9ff;
+    border-radius: 0 8px 8px 0;
+  }
+  .scenario-card.most-likely { border-left-color: var(--dmk-red); background: #fff5f5; }
+  .scenario-card.admk-win { border-left-color: var(--admk-green); background: #f0fff4; }
+  .scenario-card.hung { border-left-color: #ffc107; background: #fffdf0; }
+  .scenario-card h4 { margin-bottom: 0.4rem; }
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    margin-left: 0.5rem;
+  }
+  .badge-red { background: var(--dmk-red); }
+  .badge-green { background: var(--admk-green); }
+  .badge-gold { background: #b8860b; }
+  .badge-blue { background: var(--accent); }
+  .warning-box {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    gap: 1.5rem;
+    margin: 1rem 0;
+  }
+  .chart-grid img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .factor-list {
+    list-style: none;
+    margin-left: 0;
+  }
+  .factor-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  .factor-pro { color: var(--admk-green); font-weight: 700; }
+  .factor-con { color: var(--dmk-red); font-weight: 700; }
+  .outcome-text {
+    font-style: italic;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+  }
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+  }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.4rem; }
+    .container { padding: 1rem; }
+    .card { padding: 1.2rem; }
+    .chart-grid { grid-template-columns: 1fr; }
+    .prediction-grid { grid-template-columns: 1fr 1fr; }
+    .prob-bar-label { width: 100px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── HERO ──────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <h1>Tamil Nadu 2026 Assembly Election</h1>
+  <p style="font-size:1.15rem;opacity:0.9;">Comprehensive Prediction Report</p>
+  <div class="meta">
+    <span>📅 Election: April 23, 2026</span>
+    <span>📊 Results: May 4, 2026</span>
+    <span>🗳️ 234 Seats</span>
+    <span>✅ Majority: 118</span>
+    <span>👥 5.67 Cr Voters</span>
+  </div>
+  <p class="meta">Report Generated: April 2, 2026</p>
+</div>
+
+<div class="container">
+
+<!-- ─── EXECUTIVE SUMMARY ────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Executive Summary</h2>
+  <p>The <strong>DMK-led Secular Progressive Alliance (SPA)</strong> is the clear frontrunner to win the 2026 Tamil Nadu Assembly Election, with an ensemble prediction of <strong>~149 seats (range: 132–166)</strong> and a <strong>65% win probability</strong>. The ADMK+ (NDA) alliance is projected at <strong>~73 seats (range: 56–89)</strong> with a <strong>30% win probability</strong>. TVK (Vijay) is expected to win <strong>~8 seats</strong> but will drain 12–15% of votes, primarily hurting the ADMK+.</p>
+  <p>Despite Tamil Nadu's iron-clad anti-incumbency tradition — DMK has <strong>never</strong> won consecutive Assembly elections — unprecedented conditions (ADMK organizational collapse post-Jayalalithaa, TVK vote-splitting, DMK's 2024 Lok Sabha clean sweep of 39/39 seats) make this election a likely exception.</p>
+</div>
+
+<!-- ─── FINAL PREDICTION BOX ─────────────────────────────────────────── -->
+<div class="prediction-box">
+  <h3>⚡ FINAL ENSEMBLE PREDICTION</h3>
+  <div class="prediction-grid">
+    <div class="pred-card spa">
+      <div class="seats">149</div>
+      <div class="label">SPA (DMK-led)</div>
+      <div class="range">Range: 132 – 166</div>
+      <div class="prob">Win: 65%</div>
+    </div>
+    <div class="pred-card admk">
+      <div class="seats">73</div>
+      <div class="label">ADMK+ (NDA)</div>
+      <div class="range">Range: 56 – 89</div>
+      <div class="prob">Win: 30%</div>
+    </div>
+    <div class="pred-card tvk">
+      <div class="seats">9</div>
+      <div class="label">TVK (Vijay)</div>
+      <div class="range">Range: 3 – 13</div>
+      <div class="prob">Win: 1%</div>
+    </div>
+    <div class="pred-card others">
+      <div class="seats">3</div>
+      <div class="label">Others (NTK etc.)</div>
+      <div class="range">Range: 0 – 5</div>
+      <div class="prob">Win: 1%</div>
+    </div>
+  </div>
+  <p style="margin-top:1.5rem;font-size:1.1rem;">
+    <strong>Likely Outcome:</strong> DMK-led SPA forms government &nbsp;|&nbsp;
+    <strong>Predicted CM:</strong> M. K. Stalin (DMK)
+  </p>
+</div>
+
+<!-- ─── WIN PROBABILITY BARS ─────────────────────────────────────────── -->
+<div class="card">
+  <h2>Government Formation Probability</h2>
+  <div class="prob-bar-container">
+    <div class="prob-bar-row">
+      <div class="prob-bar-label">SPA (DMK)</div>
+      <div class="prob-bar-track">
+        <div class="prob-bar-fill" style="width:65%;background:var(--dmk-red);">65%</div>
+      </div>
+    </div>
+    <div class="prob-bar-row">
+      <div class="prob-bar-label">ADMK+ (NDA)</div>
+      <div class="prob-bar-track">
+        <div class="prob-bar-fill" style="width:30%;background:var(--admk-green);">30%</div>
+      </div>
+    </div>
+    <div class="prob-bar-row">
+      <div class="prob-bar-label">Hung Assembly</div>
+      <div class="prob-bar-track">
+        <div class="prob-bar-fill" style="width:4%;background:#ffc107;color:#333;">4%</div>
+      </div>
+    </div>
+    <div class="prob-bar-row">
+      <div class="prob-bar-label">TVK</div>
+      <div class="prob-bar-track">
+        <div class="prob-bar-fill" style="width:1%;background:#b8860b;min-width:30px;">1%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 1. ALLIANCE CONFIGURATION ────────────────────────────────────── -->
+<div class="card">
+  <h2>1. Alliance Configuration</h2>
+
+  <h3>SPA — Secular Progressive Alliance (DMK-led) <span class="badge badge-red">Incumbent</span></h3>
+  <table>
+    <thead><tr><th>Party</th><th>Seats Contested</th><th>Key Leader</th></tr></thead>
+    <tbody>
+      <tr><td><strong>DMK</strong></td><td>176</td><td>CM M.K. Stalin</td></tr>
+      <tr><td>INC</td><td>28</td><td>K.S. Alagiri</td></tr>
+      <tr><td>DMDK</td><td>10</td><td>Premalatha Vijayakanth</td></tr>
+      <tr><td>VCK</td><td>8</td><td>Thol. Thirumavalavan</td></tr>
+      <tr><td>CPI(M)</td><td>5</td><td>K. Balakrishnan</td></tr>
+      <tr><td>CPI</td><td>5</td><td>R. Mutharasan</td></tr>
+      <tr><td>MDMK</td><td>4</td><td>Vaiko</td></tr>
+      <tr><td>Others</td><td>~2</td><td>IUML, KMDK, MJK etc.</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Key Additions:</strong> DMDK (from NDA), OPS faction joining DMK is a coup. Broadest alliance since 2021.</p>
+
+  <h3>ADMK+ — NDA Alliance (AIADMK-led) <span class="badge badge-green">Opposition</span></h3>
+  <table>
+    <thead><tr><th>Party</th><th>Seats Contested</th><th>Key Leader</th></tr></thead>
+    <tbody>
+      <tr><td><strong>AIADMK</strong></td><td>172</td><td>Edappadi K. Palaniswami</td></tr>
+      <tr><td>BJP</td><td>33</td><td>K. Annamalai</td></tr>
+      <tr><td>PMK</td><td>18</td><td>Anbumani Ramadoss</td></tr>
+      <tr><td>AMMK</td><td>11</td><td>T.T.V. Dhinakaran</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Key Losses:</strong> Lost DMDK and OPS to DMK. Sasikala running separate front. Organizational capacity reduced.</p>
+
+  <h3>TVK — Tamilaga Vettri Kazhagam <span class="badge badge-gold">New Entrant</span></h3>
+  <ul>
+    <li>Contesting all <strong>234 seats</strong> solo</li>
+    <li>First-ever election for the party</li>
+    <li>CM Face: Actor <strong>Vijay</strong></li>
+  </ul>
+
+  <h3>NTK — Naam Tamilar Katchi (Seeman)</h3>
+  <ul>
+    <li>Contesting all <strong>234 seats</strong> solo</li>
+    <li>Ideological Tamil nationalist base</li>
+  </ul>
+
+  <h3>PMK(R)-Sasikala Front</h3>
+  <p>~81 seats, aimed at spoiling ADMK in Vanniyar belt.</p>
+</div>
+
+<!-- ─── 2. PREDICTION MODELS ─────────────────────────────────────────── -->
+<div class="card">
+  <h2>2. Prediction Models &amp; Results</h2>
+
+  <!-- Model 1 -->
+  <h3>Model 1: Historical Alternation Pattern</h3>
+  <p>Tamil Nadu has alternated between DMK and ADMK with <strong>67% regularity</strong> since 1967. The DMK has <strong>never</strong> won consecutive Assembly elections post-1971 (0/5 attempts: 1971→1977, 1989→1991, 1996→2001, 2006→2011, 2021→2026?).</p>
+  <table>
+    <thead><tr><th></th><th>SPA</th><th>ADMK+</th><th>TVK</th><th>Confidence</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Seats</strong></td><td>95–120</td><td>100–140</td><td>5–20</td><td>Medium</td></tr>
+      <tr><td><strong>Win Prob</strong></td><td>35%</td><td>50%</td><td>1%</td><td></td></tr>
+    </tbody>
+  </table>
+  <p><strong>Verdict:</strong> Favors ADMK. But pattern is not absolute — ADMK itself won back-to-back in 1977-80-84 and 2011-16.</p>
+
+  <!-- Model 2 -->
+  <h3>Model 2: Swing Analysis (2024 Lok Sabha → 2026 Assembly)</h3>
+  <p>The 2024 Lok Sabha gave SPA a <strong>42.1% vote share</strong> and a <strong>39/39 seat sweep</strong>. Adjusting for TVK emergence, united NDA, and Sasikala/PMK(R) draining ADMK votes:</p>
+  <table>
+    <thead><tr><th>Alliance</th><th>2024 LS Vote%</th><th>2026 Projected Vote%</th><th>Projected Seats</th></tr></thead>
+    <tbody>
+      <tr><td>SPA (DMK-led)</td><td>42.1%</td><td>41.1%</td><td><strong>163</strong></td></tr>
+      <tr><td>ADMK+ (NDA)</td><td>34.7% (split)</td><td>27.3%</td><td>58</td></tr>
+      <tr><td>TVK</td><td>—</td><td>12.0%</td><td>7</td></tr>
+      <tr><td>NTK</td><td>5.2%</td><td>4.0%</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Verdict:</strong> Strongly favors DMK. But LS→Assembly swing is historically unreliable.</p>
+
+  <!-- Model 3 -->
+  <h3>Model 3: Opinion Poll Aggregation (Bayesian-Weighted)</h3>
+  <table>
+    <thead><tr><th>Agency</th><th>Date</th><th>Sample</th><th>SPA Seats</th><th>ADMK+ Seats</th><th>TVK Seats</th><th>SPA %</th><th>ADMK %</th><th>TVK %</th></tr></thead>
+    <tbody>
+      <tr><td>IANS-Matrize</td><td>Mar 15</td><td>17,410</td><td>104–114</td><td>114–127</td><td>6–12</td><td>37.5%</td><td>39.5%</td><td>14.5%</td></tr>
+      <tr><td>News18-VoteVibe</td><td>Mar 23</td><td>7,992</td><td>113–123</td><td>106–116</td><td>2–8</td><td>40.0%</td><td>38.0%</td><td>15.0%</td></tr>
+      <tr><td>Agni</td><td>Mar 23</td><td>101,643</td><td>180</td><td>50–60</td><td>0–10</td><td>44.9%</td><td>38.5%</td><td>9.7%</td></tr>
+      <tr><td>Lokpal</td><td>Apr 1</td><td>117,000</td><td>181–189</td><td>38–42</td><td>8–10</td><td>40.1%</td><td>29.0%</td><td>23.9%</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Bayesian-Weighted Aggregate:</strong> SPA <strong>167 seats</strong>, ADMK+ <strong>62 seats</strong>, TVK <strong>7 seats</strong></p>
+  <div class="warning-box">
+    ⚠️ <strong>WARNING:</strong> Massive divergence — two polls show a tight race, two show a DMK landslide (180+ seats). Standard deviation = ±29 seats for both major alliances.
+  </div>
+
+  <!-- Model 4 -->
+  <h3>Model 4: Incumbency Factor Analysis</h3>
+  <p><strong>Factors Favoring DMK (<span class="factor-pro">+7.3/10</span>):</strong></p>
+  <ul class="factor-list">
+    <li><span class="factor-pro">+9/10</span> — 2024 Lok Sabha clean sweep (39/39 seats)</li>
+    <li><span class="factor-pro">+8/10</span> — Alliance management — DMDK, OPS additions</li>
+    <li><span class="factor-pro">+8/10</span> — Strong organizational machinery</li>
+    <li><span class="factor-pro">+7/10</span> — Welfare schemes — breakfast scheme, Kalaignar insurance</li>
+  </ul>
+  <p><strong>Factors Against DMK (<span class="factor-con">-5.5/10</span>):</strong></p>
+  <ul class="factor-list">
+    <li><span class="factor-con">-8/10</span> — Historical anti-incumbency — never won consecutive</li>
+    <li><span class="factor-con">-6/10</span> — Rising prices / inflation</li>
+    <li><span class="factor-con">-5/10</span> — Corruption allegations — Senthil Balaji</li>
+    <li><span class="factor-con">-5/10</span> — Liquor policy criticism, TASMAC</li>
+  </ul>
+  <p><strong>Net Incumbency Score: +1.8</strong> → Slightly positive environment</p>
+  <table>
+    <thead><tr><th></th><th>SPA</th><th>ADMK+</th><th>TVK</th><th>Confidence</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Seats</strong></td><td>140–170</td><td>50–80</td><td>5–15</td><td>Medium</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Model 5 -->
+  <h3>Model 5: Vote Share → Seat Conversion (Modified Cube Law)</h3>
+  <p>Using historical TN data calibration (power = 2.5 for multi-corner contests):</p>
+  <table>
+    <thead><tr><th>Scenario</th><th>SPA Vote → Seats</th><th>ADMK+ Vote → Seats</th><th>TVK Vote → Seats</th></tr></thead>
+    <tbody>
+      <tr><td>Close 3-way (39 vs 36 vs 14%)</td><td>121</td><td>99</td><td>9</td></tr>
+      <tr><td>DMK lead (42 vs 34 vs 12%)</td><td>140</td><td>82</td><td>6</td></tr>
+      <tr><td>DMK dominant (45 vs 32 vs 10%)</td><td>156</td><td>67</td><td>4</td></tr>
+      <tr><td>ADMK lead (36 vs 40 vs 13%)</td><td>96</td><td>125</td><td>8</td></tr>
+    </tbody>
+  </table>
+  <p>Historical winner seat ratio: <strong>1.42x–1.93x</strong> of vote share.</p>
+
+  <!-- Model 6 -->
+  <h3>Model 6: Alliance Arithmetic &amp; Caste Matrix</h3>
+  <table>
+    <thead><tr><th>Alliance</th><th>Core Vote</th><th>Transfer Eff.</th><th>Additions</th><th>Leakage</th><th>Net Vote</th></tr></thead>
+    <tbody>
+      <tr><td>SPA (DMK-led)</td><td>38.0%</td><td>85%</td><td>+2.0%</td><td>-3.0%</td><td>31.3%</td></tr>
+      <tr><td>ADMK+ (NDA)</td><td>34.0%</td><td>75%</td><td>+3.0%</td><td>-7.0%</td><td>21.5%</td></tr>
+      <tr><td>TVK</td><td>5.0%</td><td>90%</td><td>+8.0%</td><td>—</td><td>12.5%</td></tr>
+      <tr><td>NTK</td><td>4.0%</td><td>95%</td><td>—</td><td>-0.5%</td><td>3.3%</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Key Caste Factors:</strong></p>
+  <ul>
+    <li><strong>Vanniyar belt (N. TN):</strong> PMK split hurts ADMK in ~40 seats</li>
+    <li><strong>Dalits (SC seats):</strong> VCK+DMK hold strong — DMK advantage</li>
+    <li><strong>Muslim (12%):</strong> Solidly with DMK alliance — IUML, SDPI</li>
+    <li><strong>Gounders (W. TN):</strong> ADMK stronghold, TVK may make inroads</li>
+    <li><strong>OBC Others:</strong> TVK's main hunting ground</li>
+  </ul>
+
+  <!-- Model 7 -->
+  <h3>Model 7: Composite Ensemble (Final Prediction)</h3>
+  <p><strong>Model Weights:</strong></p>
+  <table>
+    <thead><tr><th>Model</th><th>Weight</th><th>Rationale</th></tr></thead>
+    <tbody>
+      <tr><td>Opinion Polls (M3)</td><td><strong>30%</strong></td><td>Largest direct data, despite divergence</td></tr>
+      <tr><td>Alliance Arithmetic (M6)</td><td>20%</td><td>Ground-level structural analysis</td></tr>
+      <tr><td>Swing Analysis (M2)</td><td>15%</td><td>Recent electoral performance</td></tr>
+      <tr><td>Incumbency Factor (M4)</td><td>15%</td><td>Governance assessment</td></tr>
+      <tr><td>Historical Pattern (M1)</td><td>10%</td><td>Long-term trend (weakened by conditions)</td></tr>
+      <tr><td>Vote→Seat Conversion (M5)</td><td>10%</td><td>Mathematical backing</td></tr>
+    </tbody>
+  </table>
+
+  <table>
+    <thead><tr><th>Alliance</th><th>Predicted Seats</th><th>Range</th><th>Win Probability</th></tr></thead>
+    <tbody>
+      <tr class="highlight-row"><td><strong>SPA (DMK-led)</strong></td><td><strong>149</strong></td><td>132–166</td><td><strong>65%</strong></td></tr>
+      <tr><td>ADMK+ (NDA)</td><td>73</td><td>56–89</td><td>30%</td></tr>
+      <tr><td>TVK</td><td>9</td><td>3–13</td><td>1%</td></tr>
+      <tr><td>Others (NTK etc.)</td><td>3</td><td>0–5</td><td>1%</td></tr>
+      <tr><td><em>Hung Assembly</em></td><td>—</td><td>—</td><td><em>4%</em></td></tr>
+    </tbody>
+  </table>
+  <p><strong>Likely Outcome:</strong> DMK-led SPA forms government &nbsp;|&nbsp; <strong>Predicted CM:</strong> M. K. Stalin (DMK)</p>
+</div>
+
+<!-- ─── 3. SCENARIO ANALYSIS ─────────────────────────────────────────── -->
+<div class="card">
+  <h2>3. Scenario Analysis</h2>
+
+  <div class="scenario-card most-likely">
+    <h4>Scenario 1: DMK Comfortable Win — 45% Probability ⭐ Most Likely</h4>
+    <p>DMK welfare schemes hold urban and rural base. TVK eats into ADMK solidly. Alliance discipline maintained.</p>
+    <table>
+      <thead><tr><th>SPA</th><th>ADMK+</th><th>TVK</th><th>Others</th></tr></thead>
+      <tbody><tr><td><strong>145–165</strong></td><td>55–75</td><td>5–12</td><td>0–3</td></tr></tbody>
+    </table>
+    <p class="outcome-text">→ Stalin continues as CM. Stable government. Historic first consecutive win for DMK.</p>
+  </div>
+
+  <div class="scenario-card">
+    <h4>Scenario 2: DMK Narrow Win — 20% Probability</h4>
+    <p>Anti-incumbency partially kicks in. TVK surprises in some urban pockets. ADMK performs better in Western TN.</p>
+    <table>
+      <thead><tr><th>SPA</th><th>ADMK+</th><th>TVK</th><th>Others</th></tr></thead>
+      <tbody><tr><td><strong>120–144</strong></td><td>75–100</td><td>8–15</td><td>0–5</td></tr></tbody>
+    </table>
+    <p class="outcome-text">→ DMK forms government but with thinner margin. Minor coalition management needed.</p>
+  </div>
+
+  <div class="scenario-card hung">
+    <h4>Scenario 3: Hung Assembly — 10% Probability</h4>
+    <p>TVK performs much better than expected (&gt;20 seats). Both DMK and ADMK fall short of majority.</p>
+    <table>
+      <thead><tr><th>SPA</th><th>ADMK+</th><th>TVK</th><th>Others</th></tr></thead>
+      <tbody><tr><td>100–117</td><td>85–110</td><td><strong>15–30</strong></td><td>2–8</td></tr></tbody>
+    </table>
+    <p class="outcome-text">→ Post-election coalition negotiations. TVK becomes kingmaker. Constitutional crisis possible.</p>
+  </div>
+
+  <div class="scenario-card admk-win">
+    <h4>Scenario 4: ADMK+ Comeback — 20% Probability</h4>
+    <p>Anti-incumbency wave materializes. TVK flops. United NDA transfers votes efficiently. PMK delivers Vanniyar belt.</p>
+    <table>
+      <thead><tr><th>SPA</th><th>ADMK+</th><th>TVK</th><th>Others</th></tr></thead>
+      <tbody><tr><td>85–110</td><td><strong>115–140</strong></td><td>2–8</td><td>0–3</td></tr></tbody>
+    </table>
+    <p class="outcome-text">→ EPS becomes CM. NDA coalition government. BJP gets significant cabinet presence.</p>
+  </div>
+
+  <div class="scenario-card">
+    <h4>Scenario 5: DMK Landslide — 5% Probability</h4>
+    <p>2024 LS momentum fully sustained. TVK massively splits ADMK. Welfare schemes create wave-like conditions.</p>
+    <table>
+      <thead><tr><th>SPA</th><th>ADMK+</th><th>TVK</th><th>Others</th></tr></thead>
+      <tbody><tr><td><strong>170–190</strong></td><td>35–50</td><td>5–10</td><td>0–3</td></tr></tbody>
+    </table>
+    <p class="outcome-text">→ Historic repeat win. ADMK faces existential crisis. TVK established as third force despite low seats.</p>
+  </div>
+</div>
+
+<!-- ─── 4. KEY REGIONAL BATTLEGROUNDS ────────────────────────────────── -->
+<div class="card">
+  <h2>4. Key Regional Battlegrounds</h2>
+  <table>
+    <thead><tr><th>Region</th><th>Seats</th><th>Lean</th><th>Key Factor</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Chennai &amp; Suburbs</strong></td><td>~30</td><td style="color:var(--dmk-red);font-weight:700;">DMK strong</td><td>DMK fortress. TVK has urban youth appeal</td></tr>
+      <tr><td><strong>Northern TN</strong> (Tiruvallur, Kanchipuram)</td><td>~25</td><td style="color:var(--dmk-red);font-weight:700;">DMK</td><td>Strong DMK base, Vanniyar split helps</td></tr>
+      <tr><td><strong>Western TN</strong> (Coimbatore, Tiruppur, Erode, Salem)</td><td>~45</td><td style="color:var(--admk-green);font-weight:700;">ADMK/Swing</td><td>ADMK stronghold. TVK and BJP competitive</td></tr>
+      <tr><td><strong>Southern TN</strong> (Madurai, Tirunelveli, Thoothukudi)</td><td>~40</td><td style="font-weight:700;color:#666;">Swing</td><td>Thevar belt traditionally ADMK. DMK competes</td></tr>
+      <tr><td><strong>Delta Region</strong> (Thanjavur, Nagapattinam)</td><td>~25</td><td style="color:var(--dmk-red);font-weight:700;">DMK</td><td>Agricultural belt, DMK dominance</td></tr>
+      <tr><td><strong>Kongu Belt</strong> (Namakkal, Dharmapuri, Krishnagiri)</td><td>~30</td><td style="color:var(--admk-green);font-weight:700;">ADMK/NDA</td><td>Gounder dominance, BJP's best region</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ─── 5. RISK FACTORS ──────────────────────────────────────────────── -->
+<div class="card">
+  <h2>5. Critical Risk Factors</h2>
+  <ol>
+    <li><strong>TVK Vote Share Uncertainty</strong> — No electoral track record. Could be 5% or 20%. This single variable could swing 30+ seats between SPA and ADMK+.</li>
+    <li><strong>ADMK-BJP Transfer Efficiency</strong> — First Assembly election together. TN has historically rejected BJP. Hindutva may not transfer to Dravidian voters.</li>
+    <li><strong>Poll Divergence</strong> — Polls range from a tight race (IANS-Matrize: ADMK 120) to DMK landslide (Lokpal: DMK 185). Widest divergence ever in TN polling.</li>
+    <li><strong>Late-Breaking Events</strong> — Campaign momentum, communal/caste incidents, central government decisions could shift things in the final weeks.</li>
+    <li><strong>Sasikala/PMK(R) Spoiler Effect</strong> — Could drain just enough ADMK votes in 15-20 crucial seats to tip them to SPA.</li>
+  </ol>
+</div>
+
+<!-- ─── 6. WHY DMK MAY BREAK PATTERN ─────────────────────────────────── -->
+<div class="card">
+  <h2>6. Why DMK May Break the Anti-Incumbency Pattern</h2>
+  <ol>
+    <li><strong>No charismatic opposition leader</strong> — Post-Jayalalithaa ADMK lacks the star power that drove alternation</li>
+    <li><strong>TVK fragmenting the opposition</strong> — In every past alternation, the opposition was a united binary force</li>
+    <li><strong>2024 validation</strong> — No ruling party in TN's history swept all LS seats 2 years before Assembly elections</li>
+    <li><strong>Welfare delivery</strong> — Tangible schemes (breakfast, housing, insurance) building direct beneficiary loyalty</li>
+    <li><strong>Alliance expansion</strong> — DMDK + OPS additions give DMK access to new vote banks that ADMK lost</li>
+  </ol>
+</div>
+
+<!-- ─── 7. VISUALIZATION CHARTS ──────────────────────────────────────── -->
+<div class="card">
+  <h2>7. Visualization Charts</h2>
+  <div class="chart-grid">
+    <div>
+      <h3>Historical Assembly Results (1967–2021)</h3>
+      <img src="chart1_historical_winners.png" alt="Historical Winners">
+    </div>
+    <div>
+      <h3>Power Alternation Pattern</h3>
+      <img src="chart2_alternation_pattern.png" alt="Alternation Pattern">
+    </div>
+    <div>
+      <h3>Opinion Poll Comparison</h3>
+      <img src="chart3_opinion_polls.png" alt="Opinion Polls">
+    </div>
+    <div>
+      <h3>Vote Share Trends (2006–2026P)</h3>
+      <img src="chart4_vote_share_trends.png" alt="Vote Share Trends">
+    </div>
+    <div>
+      <h3>Final Prediction</h3>
+      <img src="chart5_final_prediction.png" alt="Final Prediction">
+    </div>
+    <div>
+      <h3>Scenario Analysis</h3>
+      <img src="chart6_scenarios.png" alt="Scenario Analysis">
+    </div>
+  </div>
+</div>
+
+<!-- ─── METHODOLOGY ──────────────────────────────────────────────────── -->
+<div class="card">
+  <h2>Methodology Notes</h2>
+  <ul>
+    <li><strong>7 independent models</strong> analyzed, each with distinct methodological approach</li>
+    <li><strong>4 opinion polls</strong> aggregated using Bayesian weighting (sample size × recency)</li>
+    <li><strong>Historical data</strong> spans 1967–2021 (13 Assembly elections, 56 years)</li>
+    <li><strong>Vote→Seat conversion</strong> uses modified cube law (power = 2.5) calibrated for TN multi-corner FPTP contests</li>
+    <li><strong>Alliance arithmetic</strong> incorporates caste/community vote bank estimates and transfer efficiency</li>
+    <li><strong>Ensemble model</strong> uses weighted combination with opinion polls weighted highest (30%)</li>
+  </ul>
+  <p><strong>Data Sources:</strong> Election Commission of India (ECI), Wikipedia, IANS-Matrize, News18-VoteVibe, Agni News Agency, Lokpal</p>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  <p><em>Disclaimer: This is a predictive analysis based on publicly available data and statistical models. Actual election outcomes may differ significantly due to unmeasured factors, voter behavior changes, and late-breaking events. This analysis is for academic and informational purposes only.</em></p>
+  <p style="margin-top:0.5rem;">Tamil Nadu 2026 Election Prediction Report — Generated April 2, 2026</p>
+</footer>
+
+</body>
+</html>

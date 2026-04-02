@@ -1,0 +1,68 @@
+{
+  "election": "2026 Tamil Nadu Legislative Assembly",
+  "date": "2026-04-23",
+  "total_seats": 234,
+  "majority": 118,
+  "registered_voters": 56707380,
+  "prediction": {
+    "most_likely_winner": "SPA (DMK-led Alliance)",
+    "predicted_cm": "M. K. Stalin",
+    "ensemble_seats": {
+      "SPA": {
+        "predicted": 149,
+        "range": [
+          132,
+          166
+        ],
+        "win_probability": 0.98
+      },
+      "ADMK+": {
+        "predicted": 73,
+        "range": [
+          56,
+          89
+        ],
+        "win_probability": 0.0
+      },
+      "TVK": {
+        "predicted": 9,
+        "range": [
+          3,
+          13
+        ],
+        "win_probability": 0.01
+      },
+      "Others": {
+        "predicted": 3,
+        "range": [
+          0,
+          5
+        ],
+        "win_probability": 0.01
+      }
+    },
+    "vote_share_estimate": {
+      "SPA": 41.5,
+      "ADMK+": 34.4,
+      "TVK": 17.0
+    },
+    "confidence": "Medium-High",
+    "key_risk": "TVK vote share uncertainty, ADMK-BJP transfer efficiency"
+  },
+  "models_used": [
+    "Historical Pattern (M1)",
+    "Swing Analysis (M2)",
+    "Opinion Polls (M3)",
+    "Incumbency (M4)",
+    "Vote→Seat (M5)",
+    "Alliance Arithmetic (M6)"
+  ],
+  "data_sources": [
+    "ECI",
+    "Wikipedia",
+    "IANS-Matrize",
+    "News18-VoteVibe",
+    "Agni News Agency",
+    "Lokpal"
+  ]
+}
