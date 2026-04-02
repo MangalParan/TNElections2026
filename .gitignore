@@ -1,0 +1,17 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.env/
+
+# IDE
+.vscode/
+*.code-workspace
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
