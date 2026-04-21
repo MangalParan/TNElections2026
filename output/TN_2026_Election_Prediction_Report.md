@@ -2,7 +2,7 @@
 
 **Election Date:** April 23, 2026 | **Results:** May 4, 2026  
 **Total Seats:** 234 | **Majority:** 118 | **Registered Voters:** 5.67 Crore  
-**Report Generated:** April 2, 2026  
+**Report Generated:** April 6, 2026 (Updated)  
 
 ---
 
