@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tamil Nadu 2026 — Exit Poll Analysis</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --dmk:    #E31A1C;
+    --admk:   #006400;
+    --tvk:    #FF8C00;
+    --others: #6B4C9A;
+    --bg:     #0d1117;
+    --card:   #161b22;
+    --border: #30363d;
+    --text:   #e6edf3;
+    --muted:  #8b949e;
+    --accent: #58a6ff;
+    --gold:   #f0e68c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(135deg, #1a0a00 0%, #0d1117 40%, #001a33 100%);
+    border-bottom: 2px solid var(--border);
+    padding: 28px 48px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .flag-stripe { width: 8px; height: 80px; background: linear-gradient(to bottom, #ff9933 33%, #fff 33% 66%, #138808 66%); border-radius: 4px; }
+  header h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px; }
+  header h1 span { color: var(--accent); }
+  header .meta { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+  .live-badge {
+    margin-left: auto;
+    background: #ff4444; color: #fff;
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+    animation: pulse 1.4s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  /* ─── LAYOUT ─── */
+  main { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
+
+  /* ─── SECTION TITLE ─── */
+  .section-title {
+    font-size: 1.1rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--accent);
+    border-left: 4px solid var(--accent); padding-left: 12px;
+    margin: 36px 0 16px;
+  }
+
+  /* ─── TICKER ─── */
+  .ticker-wrap { background: #111; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 32px; }
+  .ticker-label { float: left; background: var(--accent); color: #000; font-weight: 700; font-size: 0.75rem; padding: 8px 14px; }
+  .ticker-track { overflow: hidden; white-space: nowrap; padding: 8px 0; }
+  .ticker-track span { display: inline-block; padding-left: 100%; animation: ticker 40s linear infinite; font-size: 0.82rem; color: var(--text); }
+  @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-100%)} }
+
+  /* ─── SUMMARY CARDS ─── */
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  @media(max-width:900px){ .summary-grid{grid-template-columns:repeat(2,1fr);} }
+  .s-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 22px;
+    position: relative; overflow: hidden;
+  }
+  .s-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:4px; background: var(--party-color,#fff); }
+  .s-card .party-name { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+  .s-card .seat-range { font-size: 2.2rem; font-weight: 900; color: var(--party-color); line-height: 1; margin: 8px 0 4px; }
+  .s-card .vote-pct { font-size: 0.9rem; color: var(--muted); }
+  .s-card .verdict { font-size: 0.78rem; font-weight: 600; margin-top: 10px; padding: 3px 10px; border-radius: 12px; display: inline-block; }
+  .verdict-win { background: rgba(227,26,28,0.15); color: #ff6b6b; }
+  .verdict-loss { background: rgba(100,100,100,0.15); color: var(--muted); }
+  .verdict-entry { background: rgba(255,140,0,0.15); color: #ffa500; }
+
+  /* ─── CHARTS GRID ─── */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  @media(max-width:800px){ .charts-grid{grid-template-columns:1fr;} }
+  .chart-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+  }
+  .chart-title { font-size: 0.88rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 280px; }
+
+  /* ─── TABLE ─── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  thead th {
+    background: #1c2128; color: var(--muted); font-size: 0.73rem;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:hover { background: rgba(88,166,255,0.05); }
+  tbody td { padding: 10px 14px; vertical-align: middle; }
+  .exit-row { background: rgba(88,166,255,0.06); }
+  .exit-row td:first-child { border-left: 3px solid var(--accent); }
+  .pill {
+    display: inline-block; padding: 2px 10px; border-radius: 20px;
+    font-size: 0.73rem; font-weight: 600;
+  }
+  .pill-exit { background: rgba(88,166,255,0.2); color: var(--accent); }
+  .pill-opinion { background: rgba(100,100,100,0.2); color: var(--muted); }
+
+  /* ─── RANGE BAR ─── */
+  .range-cell { display: flex; flex-direction: column; gap: 2px; }
+  .range-label { font-size: 0.8rem; font-weight: 700; }
+  .range-bar-wrap { height: 4px; background: var(--border); border-radius: 2px; width: 120px; }
+  .range-bar { height: 100%; border-radius: 2px; }
+
+  /* ─── POLLSTER CARDS ─── */
+  .pollster-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+  @media(max-width:700px){ .pollster-grid{grid-template-columns:1fr;} }
+  .p-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+  .p-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .p-card-name { font-weight: 700; font-size: 0.95rem; }
+  .p-card-date { font-size: 0.73rem; color: var(--muted); }
+  .p-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .p-row-label { width: 90px; font-size: 0.78rem; font-weight: 600; }
+  .p-bar-outer { flex: 1; height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+  .p-bar-inner { height: 100%; border-radius: 5px; transition: width 0.8s ease; }
+  .p-row-seats { font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+
+  /* ─── MAJORITY LINE ─── */
+  .majority-note { font-size: 0.78rem; color: #ffd700; margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+  .majority-note::before { content: '▶'; font-size: 0.6rem; }
+
+  /* ─── ANALYSIS BOX ─── */
+  .analysis-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+  .analysis-box h3 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--accent); }
+  .finding { display: flex; gap: 14px; margin-bottom: 14px; }
+  .finding-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .finding-text strong { display: block; font-size: 0.9rem; margin-bottom: 3px; }
+  .finding-text p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* ─── FOOTER ─── */
+  footer { border-top: 1px solid var(--border); padding: 24px 48px; text-align: center; color: var(--muted); font-size: 0.78rem; margin-top: 40px; }
+  .source-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px; }
+  .chip { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: 0.72rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="flag-stripe"></div>
+  <div>
+    <h1>Tamil Nadu 2026 — <span>Exit Poll Analysis</span></h1>
+    <div class="meta">234 Assembly Constituencies &nbsp;|&nbsp; Voting: April 23, 2026 &nbsp;|&nbsp; Results: May 4, 2026 &nbsp;|&nbsp; Analysis Date: April 29, 2026</div>
+  </div>
+  <div class="live-badge">LIVE ANALYSIS</div>
+</header>
+
+<div class="ticker-wrap">
+  <span class="ticker-label">EXIT POLLS</span>
+  <div class="ticker-track">
+    <span>
+      🔴 CHANAKYA: DMK+ 145–160 | AIADMK+ 50–65 | TVK 13–18 &nbsp;•&nbsp;
+      🟠 P-MARQ: DMK+ 125–145 | AIADMK+ 65–85 | TVK 16–26 &nbsp;•&nbsp;
+      🟡 MATRIZE: DMK+ 122–132 | AIADMK+ 87–100 &nbsp;•&nbsp;
+      🔵 ABP-CVOTER: DMK+ 132–148 | AIADMK+ 72–88 | TVK 8–16 &nbsp;•&nbsp;
+      ⚖️ POLL OF POLLS: DMK+ 138–153 | AIADMK+ 66–82 | Majority line = 118 &nbsp;•&nbsp;
+      🏆 VERDICT: DMK alliance set for comfortable majority — Stalin poised for 2nd term
+    </span>
+  </div>
+</div>
+
+<main>
+
+  <!-- SUMMARY CARDS -->
+  <div class="section-title">Consensus Exit Poll Picture</div>
+  <div class="summary-grid">
+    <div class="s-card" style="--party-color: var(--dmk)">
+      <div class="party-name">DMK Alliance (SPA)</div>
+      <div class="seat-range">138–153</div>
+      <div class="vote-pct">~40.4% vote share &nbsp;|&nbsp; Poll of Polls</div>
+      <div class="verdict verdict-win">✓ Majority Comfortable</div>
+    </div>
+    <div class="s-card" style="--party-color: var(--admk)">
+      <div class="party-name">AIADMK Alliance</div>
+      <div class="seat-range">66–82</div>
+      <div class="vote-pct">~34.6% vote share &nbsp;|&nbsp; Poll of Polls</div>
+      <div class="verdict verdict-loss">✗ Well Short of Majority</div>
+    </div>
+    <div class="s-card" style="--party-color: var(--tvk)">
+      <div class="party-name">TVK (Vijay's Party)</div>
+      <div class="seat-range">10–20</div>
+      <div class="vote-pct">~17.8% vote share &nbsp;|&nbsp; Debut Election</div>
+      <div class="verdict verdict-entry">★ Strong Debut Impact</div>
+    </div>
+    <div class="s-card" style="--party-color: var(--others)">
+      <div class="party-name">Others (NTK, PMK, BJP…)</div>
+      <div class="seat-range">3–11</div>
+      <div class="vote-pct">~7.2% vote share &nbsp;|&nbsp; Fragmented</div>
+      <div class="verdict verdict-loss">→ Marginal Role</div>
+    </div>
+  </div>
+
+  <div class="majority-note">Majority mark: 118 seats of 234 &nbsp;|&nbsp; All pollsters unanimously predict DMK+ crossing 118</div>
+
+  <!-- CHARTS -->
+  <div class="section-title">Visual Analysis</div>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Seat Range — All Exit Polls (DMK+)</div>
+      <div class="chart-wrap"><canvas id="seatRangeChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Poll of Polls — Seat Share Distribution</div>
+      <div class="chart-wrap"><canvas id="donutChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Vote Share % Comparison (All Exit Polls)</div>
+      <div class="chart-wrap"><canvas id="voteShareChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Opinion Polls → Exit Poll Trend (DMK+ Seats)</div>
+      <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- INDIVIDUAL POLLSTER CARDS -->
+  <div class="section-title">Exit Poll Breakdown by Agency</div>
+  <div class="pollster-grid">
+
+    <!-- Chanakya -->
+    <div class="p-card">
+      <div class="p-card-header">
+        <div class="p-card-name">🔮 Chanakya Strategies</div>
+        <div class="p-card-date">Apr 29, 2026 &nbsp;|&nbsp; n=45,000</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--dmk)">DMK+</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:66%;background:var(--dmk)"></div></div>
+        <div class="p-row-seats">145–160 seats&nbsp;(44%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--admk)">AIADMK+</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:25%;background:var(--admk)"></div></div>
+        <div class="p-row-seats">50–65 seats&nbsp;(38%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--tvk)">TVK</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:7%;background:var(--tvk)"></div></div>
+        <div class="p-row-seats">13–18 seats&nbsp;(14%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--others)">Others</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:3%;background:var(--others)"></div></div>
+        <div class="p-row-seats">5–8 seats&nbsp;(5%)&nbsp;votes</div>
+      </div>
+      <div class="majority-note">Most bullish for DMK — predicts 152 seat midpoint</div>
+    </div>
+
+    <!-- P-MARQ -->
+    <div class="p-card">
+      <div class="p-card-header">
+        <div class="p-card-name">📊 P-MARQ (Republic TV)</div>
+        <div class="p-card-date">Apr 29, 2026 &nbsp;|&nbsp; n=52,000</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--dmk)">DMK+</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:58%;background:var(--dmk)"></div></div>
+        <div class="p-row-seats">125–145 seats&nbsp;(36%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--admk)">AIADMK+</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:32%;background:var(--admk)"></div></div>
+        <div class="p-row-seats">65–85 seats&nbsp;(31%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--tvk)">TVK</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:9%;background:var(--tvk)"></div></div>
+        <div class="p-row-seats">16–26 seats&nbsp;(23%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--others)">Others</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:4%;background:var(--others)"></div></div>
+        <div class="p-row-seats">4–8 seats&nbsp;(10%)&nbsp;votes</div>
+      </div>
+      <div class="majority-note">Most bullish for TVK — gives 23% vote share to Vijay's party</div>
+    </div>
+
+    <!-- Matrize -->
+    <div class="p-card">
+      <div class="p-card-header">
+        <div class="p-card-name">📈 Matrize (Republic / IANS)</div>
+        <div class="p-card-date">Apr 29, 2026 &nbsp;|&nbsp; n=68,750</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--dmk)">DMK+</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:55%;background:var(--dmk)"></div></div>
+        <div class="p-row-seats">122–132 seats&nbsp;(40.5%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--admk)">AIADMK+</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:40%;background:var(--admk)"></div></div>
+        <div class="p-row-seats">87–100 seats&nbsp;(35.8%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--tvk)">TVK</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:4%;background:var(--tvk)"></div></div>
+        <div class="p-row-seats">4–8 seats&nbsp;(16.2%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--others)">Others</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:3%;background:var(--others)"></div></div>
+        <div class="p-row-seats">2–6 seats&nbsp;(7.5%)&nbsp;votes</div>
+      </div>
+      <div class="majority-note">Most conservative — gives AIADMK+ 87–100 seats (closest contest)</div>
+    </div>
+
+    <!-- ABP-CVoter -->
+    <div class="p-card">
+      <div class="p-card-header">
+        <div class="p-card-name">📡 ABP-CVoter Exit Poll</div>
+        <div class="p-card-date">Apr 29, 2026 &nbsp;|&nbsp; n=38,500</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--dmk)">DMK+</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:61%;background:var(--dmk)"></div></div>
+        <div class="p-row-seats">132–148 seats&nbsp;(41.2%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--admk)">AIADMK+</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:33%;background:var(--admk)"></div></div>
+        <div class="p-row-seats">72–88 seats&nbsp;(33.5%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--tvk)">TVK</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:5%;background:var(--tvk)"></div></div>
+        <div class="p-row-seats">8–16 seats&nbsp;(18%)&nbsp;votes</div>
+      </div>
+      <div class="p-row">
+        <div class="p-row-label" style="color:var(--others)">Others</div>
+        <div class="p-bar-outer"><div class="p-bar-inner" style="width:2%;background:var(--others)"></div></div>
+        <div class="p-row-seats">2–6 seats&nbsp;(7.3%)&nbsp;votes</div>
+      </div>
+      <div class="majority-note">Balanced forecast — aligns closest to Poll of Polls average</div>
+    </div>
+
+  </div><!-- /pollster-grid -->
+
+  <!-- MASTER TABLE -->
+  <div class="section-title">Complete Polls Data Table</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Agency</th><th>Type</th><th>Date</th><th>Sample</th>
+          <th>DMK+ Seats</th><th>AIADMK+ Seats</th><th>TVK Seats</th><th>Others</th>
+          <th>DMK% Vote</th><th>AIADMK% Vote</th><th>TVK% Vote</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="exit-row"><td>Chanakya Strategies</td><td><span class="pill pill-exit">Exit Poll</span></td><td>Apr 29</td><td>45,000</td><td>145–160</td><td>50–65</td><td>13–18</td><td>5–8</td><td>44.0%</td><td>38.0%</td><td>14.0%</td></tr>
+        <tr class="exit-row"><td>P-MARQ (Republic TV)</td><td><span class="pill pill-exit">Exit Poll</span></td><td>Apr 29</td><td>52,000</td><td>125–145</td><td>65–85</td><td>16–26</td><td>4–8</td><td>36.0%</td><td>31.0%</td><td>23.0%</td></tr>
+        <tr class="exit-row"><td>Matrize</td><td><span class="pill pill-exit">Exit Poll</span></td><td>Apr 29</td><td>68,750</td><td>122–132</td><td>87–100</td><td>4–8</td><td>2–6</td><td>40.5%</td><td>35.8%</td><td>16.2%</td></tr>
+        <tr class="exit-row"><td>ABP-CVoter</td><td><span class="pill pill-exit">Exit Poll</span></td><td>Apr 29</td><td>38,500</td><td>132–148</td><td>72–88</td><td>8–16</td><td>2–6</td><td>41.2%</td><td>33.5%</td><td>18.0%</td></tr>
+        <tr class="exit-row"><td><strong>Poll of Polls (Avg)</strong></td><td><span class="pill pill-exit">Exit Poll</span></td><td>Apr 29</td><td>—</td><td><strong>138–153</strong></td><td><strong>66–82</strong></td><td><strong>10–20</strong></td><td><strong>3–11</strong></td><td><strong>40.4%</strong></td><td><strong>34.6%</strong></td><td><strong>17.8%</strong></td></tr>
+        <tr><td colspan="11" style="padding:6px 14px;color:var(--muted);font-size:0.75rem;font-style:italic;">— Pre-Poll Opinion Surveys (for reference) —</td></tr>
+        <tr><td>CSDS-Lokniti</td><td><span class="pill pill-opinion">Opinion Poll</span></td><td>Apr 16</td><td>32,800</td><td>148–162</td><td>60–70</td><td>10–15</td><td>2–6</td><td>41.5%</td><td>31.2%</td><td>20.1%</td></tr>
+        <tr><td>Polstrat</td><td><span class="pill pill-opinion">Opinion Poll</span></td><td>Apr 14</td><td>47,500</td><td>155–168</td><td>55–65</td><td>8–12</td><td>2–5</td><td>42.5%</td><td>30.8%</td><td>18.5%</td></tr>
+        <tr><td>CVoter-ABP</td><td><span class="pill pill-opinion">Opinion Poll</span></td><td>Apr 10</td><td>62,000</td><td>138–152</td><td>68–78</td><td>10–16</td><td>0–4</td><td>40.8%</td><td>32.0%</td><td>20.5%</td></tr>
+        <tr><td>Jan Ki Baat</td><td><span class="pill pill-opinion">Opinion Poll</span></td><td>Apr 8</td><td>85,000</td><td>145–160</td><td>62–72</td><td>8–14</td><td>2–8</td><td>41.2%</td><td>31.5%</td><td>19.8%</td></tr>
+        <tr><td>Lokpal</td><td><span class="pill pill-opinion">Opinion Poll</span></td><td>Apr 1</td><td>117,000</td><td>181–189</td><td>38–42</td><td>8–10</td><td>0–0</td><td>40.1%</td><td>29.0%</td><td>23.9%</td></tr>
+        <tr><td>IANS-Matrize</td><td><span class="pill pill-opinion">Opinion Poll</span></td><td>Mar 15</td><td>17,410</td><td>104–114</td><td>114–127</td><td>6–12</td><td>1–6</td><td>37.5%</td><td>39.5%</td><td>14.5%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- KEY FINDINGS -->
+  <div class="section-title">Key Findings & Analysis</div>
+  <div class="analysis-box">
+    <h3>📋 Expert Observations — Exit Poll 2026</h3>
+
+    <div class="finding">
+      <div class="finding-icon">🏆</div>
+      <div class="finding-text">
+        <strong>DMK Alliance Wins — All Pollsters Agree</strong>
+        <p>Every exit poll released on April 29, 2026 unanimously predicts a DMK-led SPA majority. The midpoint of Poll of Polls gives DMK+ approximately <strong>145 seats</strong> — 27 above the 118-majority mark. CM MK Stalin is poised for a second consecutive term.</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-icon">📉</div>
+      <div class="finding-text">
+        <strong>AIADMK Collapses from Opinion Poll Highs</strong>
+        <p>March 2026 opinion polls (IANS-Matrize) showed AIADMK+ at 114–127 seats — almost matching DMK. Exit polls show a dramatic collapse to <strong>66–100 seats</strong>. The TVK factor, leadership vacuum post-Jayalalithaa, and anti-incumbency against EPS appear to have severely dented AIADMK.</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-icon">⭐</div>
+      <div class="finding-text">
+        <strong>TVK's Remarkable Debut — Spoiler Role Confirmed</strong>
+        <p>Actor Vijay's Tamilaga Vettri Kazhagam (TVK) is predicted to win <strong>10–26 seats</strong> in its very first election with 14–23% vote share. While it cannot form government, TVK has severely cut into AIADMK's vote share — acting as a kingmaker of the opposition's future rather than its own.</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-icon">🎯</div>
+      <div class="finding-text">
+        <strong>Chanakya vs. Matrize — Widest Divergence</strong>
+        <p>The biggest gap between pollsters is on AIADMK seats: Chanakya gives AIADMK just <strong>50–65</strong> while Matrize gives them <strong>87–100</strong> — a 35-seat difference. This likely reflects differing assumptions about TVK vote-splitting vs. AIADMK consolidation in southern/Kongu belt.</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-icon">📊</div>
+      <div class="finding-text">
+        <strong>Vote Share vs. Seat Share Paradox</strong>
+        <p>Despite AIADMK getting 31–38% votes (vs. DMK's 36–44%), they're predicted only 29–43% of seats. This is classic First-Past-The-Post distortion — DMK's alliance arithmetic and vote consolidation in multi-party contests gives them a <strong>seat bonus of ~10–15%</strong> above their vote share.</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-icon">🗺️</div>
+      <div class="finding-text">
+        <strong>Regional Patterns Expected</strong>
+        <p>DMK expected to dominate <strong>Chennai, Vellore, Kancheepuram</strong> belts. AIADMK likely holds <strong>Kongu Nadu (Coimbatore, Erode)</strong> and parts of southern TN. TVK likely wins seats in <strong>mixed urban-rural constituencies</strong> where Vijay's popularity cuts across caste lines.</p>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-icon">🔮</div>
+      <div class="finding-text">
+        <strong>Historical Pattern Holds — Alternation Broken?</strong>
+        <p>Tamil Nadu's alternation pattern (DMK/ADMK swap every 5 years) would have predicted AIADMK winning 2026. However, exit polls suggest the pattern may be <strong>broken for the first time</strong> since 1984, with DMK winning a second consecutive term — possibly due to TVK splitting the anti-incumbency vote.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="analysis-box" style="border-color:#ffd700; border-left-width: 3px;">
+    <h3 style="color:#ffd700;">⚠️ Disclaimer</h3>
+    <p style="font-size:0.83rem; color:var(--muted); line-height:1.7;">
+      Exit polls are post-voting surveys conducted immediately after voters leave booths. They have historically been accurate on the winner in Tamil Nadu (correctly called DMK in 2021) but often miss exact seat counts by ±20–30 seats. The actual results will be announced on <strong>May 4, 2026</strong>. Data aggregated from Chanakya Strategies, P-MARQ/Republic TV, Matrize/IANS, ABP-CVoter, and ABP Poll of Polls coverage on April 29, 2026. This is an analytical compilation — not a prediction.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  <div>Tamil Nadu 2026 Assembly Election — Exit Poll Analysis Dashboard &nbsp;|&nbsp; Data compiled: April 29, 2026</div>
+  <div class="source-chips">
+    <span class="chip">Chanakya Strategies</span>
+    <span class="chip">P-MARQ / Republic TV</span>
+    <span class="chip">Matrize / IANS</span>
+    <span class="chip">ABP-CVoter</span>
+    <span class="chip">Republic Poll of Polls</span>
+    <span class="chip">ABP Live Poll of Polls</span>
+    <span class="chip">Election Commission of India</span>
+  </div>
+</footer>
+
+<script>
+// ─── Palette ─────────────────────────────────────────────
+const DMK_COLOR    = '#E31A1C';
+const ADMK_COLOR   = '#006400';
+const TVK_COLOR    = '#FF8C00';
+const OTHERS_COLOR = '#6B4C9A';
+const MUTED        = '#8b949e';
+
+// ─── 1. Seat Range Chart (horizontal grouped bars) ─────
+const seatCtx = document.getElementById('seatRangeChart').getContext('2d');
+const agencies = ['Chanakya', 'P-MARQ', 'Matrize', 'ABP-CVoter', 'Poll of Polls'];
+new Chart(seatCtx, {
+  type: 'bar',
+  data: {
+    labels: agencies,
+    datasets: [
+      {
+        label: 'DMK+ Low',
+        data: [145, 125, 122, 132, 138],
+        backgroundColor: DMK_COLOR + 'aa',
+        borderColor: DMK_COLOR, borderWidth: 1, borderRadius: 4,
+      },
+      {
+        label: 'DMK+ High',
+        data: [160, 145, 132, 148, 153],
+        backgroundColor: DMK_COLOR + '44',
+        borderColor: DMK_COLOR, borderWidth: 1, borderRadius: 4,
+      },
+      {
+        label: 'AIADMK+ Low',
+        data: [50, 65, 87, 72, 66],
+        backgroundColor: ADMK_COLOR + 'aa',
+        borderColor: ADMK_COLOR, borderWidth: 1, borderRadius: 4,
+      },
+      {
+        label: 'AIADMK+ High',
+        data: [65, 85, 100, 88, 82],
+        backgroundColor: ADMK_COLOR + '44',
+        borderColor: ADMK_COLOR, borderWidth: 1, borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: MUTED, font: { size: 11 } } },
+      annotation: {}
+    },
+    scales: {
+      x: {
+        grid: { color: '#30363d' }, ticks: { color: MUTED },
+        min: 0, max: 234,
+      },
+      y: { grid: { color: '#30363d' }, ticks: { color: '#e6edf3', font: { size: 12 } } }
+    }
+  }
+});
+
+// ─── 2. Donut Chart ──────────────────────────────────────
+const donutCtx = document.getElementById('donutChart').getContext('2d');
+new Chart(donutCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['DMK+ Alliance (145)', 'AIADMK+ (74)', 'TVK Vijay (15)', 'Others (7)'],
+    datasets: [{
+      data: [145, 74, 15, 7],
+      backgroundColor: [DMK_COLOR, ADMK_COLOR, TVK_COLOR, OTHERS_COLOR],
+      borderColor: '#0d1117',
+      borderWidth: 3,
+      hoverOffset: 8,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '60%',
+    plugins: {
+      legend: { labels: { color: '#e6edf3', font: { size: 11 }, padding: 16 }, position: 'right' },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.label}: ${ctx.parsed} seats`
+        }
+      }
+    }
+  }
+});
+
+// ─── 3. Vote Share Bar Chart ─────────────────────────────
+const vsCtx = document.getElementById('voteShareChart').getContext('2d');
+new Chart(vsCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Chanakya', 'P-MARQ', 'Matrize', 'ABP-CVoter', 'Poll of Polls'],
+    datasets: [
+      { label: 'DMK+',   data: [44.0, 36.0, 40.5, 41.2, 40.4], backgroundColor: DMK_COLOR,    borderRadius: 4 },
+      { label: 'AIADMK+',data: [38.0, 31.0, 35.8, 33.5, 34.6], backgroundColor: ADMK_COLOR,   borderRadius: 4 },
+      { label: 'TVK',    data: [14.0, 23.0, 16.2, 18.0, 17.8], backgroundColor: TVK_COLOR,    borderRadius: 4 },
+      { label: 'Others', data: [5.0,  10.0, 7.5,  7.3,  7.2],  backgroundColor: OTHERS_COLOR,  borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: MUTED, font: { size: 11 } } }
+    },
+    scales: {
+      x: { grid: { color: '#30363d' }, ticks: { color: MUTED, font: { size: 11 } } },
+      y: {
+        grid: { color: '#30363d' }, ticks: { color: MUTED },
+        max: 55, title: { display: true, text: 'Vote Share %', color: MUTED }
+      }
+    }
+  }
+});
+
+// ─── 4. Trend Line ───────────────────────────────────────
+const trendCtx = document.getElementById('trendChart').getContext('2d');
+new Chart(trendCtx, {
+  type: 'line',
+  data: {
+    labels: ['Mar 15\nMatrize', 'Mar 23\nNews18', 'Apr 1\nLokpal', 'Apr 8\nJKB', 'Apr 10\nCVoter', 'Apr 14\nPolstrat', 'Apr 16\nCSDS', 'Apr 29\nMatrize EP', 'Apr 29\nP-MARQ EP', 'Apr 29\nChanakya EP', 'Apr 29\nPoll of Polls'],
+    datasets: [
+      {
+        label: 'DMK+ Seats (Mid)',
+        data: [109, 118, 185, 152, 145, 161, 155, 127, 135, 152, 145],
+        borderColor: DMK_COLOR, backgroundColor: DMK_COLOR + '22',
+        tension: 0.3, fill: true, pointRadius: 4, borderWidth: 2,
+      },
+      {
+        label: 'AIADMK+ Seats (Mid)',
+        data: [120, 111, 40, 67, 73, 60, 65, 93, 75, 57, 74],
+        borderColor: ADMK_COLOR, backgroundColor: ADMK_COLOR + '22',
+        tension: 0.3, fill: true, pointRadius: 4, borderWidth: 2,
+      },
+      {
+        label: 'TVK Seats (Mid)',
+        data: [9, 5, 9, 11, 13, 10, 12, 6, 21, 15, 15],
+        borderColor: TVK_COLOR, backgroundColor: 'transparent',
+        tension: 0.3, pointRadius: 4, borderWidth: 2, borderDash: [5,3],
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: MUTED, font: { size: 10 } } },
+    },
+    scales: {
+      x: { grid: { color: '#30363d' }, ticks: { color: MUTED, font: { size: 9 }, maxRotation: 45 } },
+      y: {
+        grid: { color: '#30363d' }, ticks: { color: MUTED },
+        min: 0, max: 234,
+        annotation: {}
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

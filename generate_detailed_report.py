@@ -695,22 +695,12 @@ def generate_html(data):
   <td style="text-align:center;color:#aaa">{r['num']}</td>
   <td><strong>{r['name']}</strong><br><span style="color:#888;font-size:11px">{r['category']}</span></td>
   <td style="text-align:right">{r['total_votes']:,}</td>
-  <td>
-    <span style="color:#e74c3c;font-weight:600">{r['spa_votes']:,}</span><br>
-    <span style="color:#888;font-size:10px">{r['spa_candidate']}<br>({r['spa_party']})</span>
-  </td>
-  <td>
-    <span style="color:#27ae60;font-weight:600">{r['admk_votes']:,}</span><br>
-    <span style="color:#888;font-size:10px">{r['admk_candidate']}<br>({r['admk_party']})</span>
-  </td>
-  <td>
-    <span style="color:#f39c12;font-weight:600">{r['tvk_votes']:,}</span><br>
-    <span style="color:#888;font-size:10px">{r['tvk_candidate']}<br>(TVK)</span>
-  </td>
+  <td style="text-align:right"><span style="color:#e74c3c;font-weight:600">{r['spa_votes']:,}</span></td>
+  <td style="text-align:right"><span style="color:#27ae60;font-weight:600">{r['admk_votes']:,}</span></td>
+  <td style="text-align:right"><span style="color:#f39c12;font-weight:600">{r['tvk_votes']:,}</span></td>
   <td style="text-align:right;color:#95a5a6">{r['others_votes']:,}</td>
   <td style="background:{winner_bg};text-align:center">
-    <strong style="color:{winner_color}">{r['winner_name']}</strong><br>
-    <span style="font-size:10px;color:#aaa">{r['winner_party_display']}</span>
+    <span style="font-size:12px;color:{winner_color};font-weight:700">{r['winner_party_display']}</span>
   </td>
   <td style="text-align:center">
     <strong style="color:{winner_color}">{r['winner_pct']}%</strong>
@@ -736,11 +726,11 @@ def generate_html(data):
   <th style="padding:8px 4px">#</th>
   <th style="text-align:left;padding:8px">Constituency</th>
   <th style="padding:8px">Total Votes Polled</th>
-  <th style="padding:8px;color:#e74c3c">DMK+ Votes<br><small>Candidate</small></th>
-  <th style="padding:8px;color:#27ae60">AIADMK+ Votes<br><small>Candidate</small></th>
-  <th style="padding:8px;color:#f39c12">TVK Votes<br><small>Candidate</small></th>
+  <th style="padding:8px;color:#e74c3c">DMK+ Votes</th>
+  <th style="padding:8px;color:#27ae60">AIADMK+ Votes</th>
+  <th style="padding:8px;color:#f39c12">TVK Votes</th>
   <th style="padding:8px">Others/NTK</th>
-  <th style="padding:8px">Winner</th>
+  <th style="padding:8px">Winner Party</th>
   <th style="padding:8px">Win %</th>
   <th style="padding:8px">Margin</th>
   <th style="padding:8px">Result</th>
